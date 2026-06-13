@@ -64,17 +64,18 @@
   }
   function addCalcToInventory() {
     var v = calcInputs();
-    var name = window.prompt("NAME THIS ITEM:", "Item " + (getItems().length + 1));
-    if (name === null) return;
+    var nameField = $("calcName");
     var items = getItems();
+    var name = (nameField && nameField.value || "").trim() || ("Item " + (items.length + 1));
     items.push({
-      id: newId(), name: name || ("Item " + (items.length + 1)),
+      id: newId(), name: name,
       cost: v.cogs, list: v.salePrice, date: todayISO(),
       platform: activePlatform() === "CUSTOM" ? "" : activePlatform(),
       feePct: v.feePct, fixedFee: v.fixedFee, shipping: v.shipping,
       status: "active", soldPrice: 0, soldDate: "", realizedNet: 0,
     });
     setItems(items);
+    if (nameField) nameField.value = "";
     renderInventory();
     toast("Added to inventory");
     switchTab("inventory");
@@ -82,6 +83,7 @@
 
   /* ========== INVENTORY ========== */
   var filter = "active";
+  var sellingId = null;   // id of the row currently entering a sold price inline
   function daysBetween(fromISO, toISO) {
     var a = new Date(fromISO + "T00:00:00"), b = new Date((toISO || todayISO()) + "T00:00:00");
     return Math.max(0, Math.round((b - a) / 86400000));
@@ -118,6 +120,22 @@
     }).join("");
   }
 
+  function actionsHtml(it, sold) {
+    if (sold) {
+      return "<button class='rowbtn del' data-act='del' data-id='" + it.id + "'>✕</button>";
+    }
+    if (sellingId === it.id) {
+      return "<span class='sell-inline'>" +
+        "<input class='sell-input' id='sell-" + it.id + "' type='number' step='0.01' inputmode='decimal' " +
+          "placeholder='SOLD $' value='" + (it.list || "") + "' />" +
+        "<button class='rowbtn sold' data-act='confirmsold' data-id='" + it.id + "'>✓</button>" +
+        "<button class='rowbtn' data-act='cancelsold' data-id='" + it.id + "'>✕</button>" +
+        "</span>";
+    }
+    return "<button class='rowbtn sold' data-act='sold' data-id='" + it.id + "'>SOLD</button>" +
+      "<button class='rowbtn del' data-act='del' data-id='" + it.id + "'>✕</button>";
+  }
+
   function renderTable() {
     var items = getItems().filter(function (i) {
       if (filter === "all") return true;
@@ -142,8 +160,7 @@
         "<td class='num'>" + days + "</td>" +
         "<td><span class='pill age-" + b.k + "'>" + b.t + "</span></td>" +
         "<td><span class='pill " + (sold ? "st-sold" : "st-active") + "'>" + (sold ? "SOLD" : "ACTIVE") + "</span></td>" +
-        "<td class='num'>" + (sold ? "" : "<button class='rowbtn sold' data-act='sold' data-id='" + it.id + "'>SOLD</button>") +
-          "<button class='rowbtn del' data-act='del' data-id='" + it.id + "'>✕</button></td>" +
+        "<td class='num'>" + actionsHtml(it, sold) + "</td>" +
         "</tr>";
     }).join("");
   }
@@ -169,15 +186,22 @@
     renderInventory(); $("i_name").focus(); toast("Item added");
   }
 
-  function markSold(id) {
+  function startSell(id) {
+    sellingId = id;
+    renderTable();
+    var input = $("sell-" + id);
+    if (input) { input.focus(); input.select(); }
+  }
+  function cancelSell() { sellingId = null; renderTable(); }
+  function confirmSell(id) {
+    var input = $("sell-" + id);
+    var price = input ? parseFloat(input.value) : NaN;
+    if (!isFinite(price)) { toast("Enter a valid price"); if (input) input.focus(); return; }
     var items = getItems(), it = items.filter(function (x) { return x.id === id; })[0];
     if (!it) return;
-    var input = window.prompt("SOLD PRICE FOR \"" + it.name + "\":", it.list ? String(it.list) : "");
-    if (input === null) return;
-    var price = parseFloat(input);
-    if (!isFinite(price)) { toast("Enter a valid price"); return; }
     it.status = "sold"; it.soldPrice = price; it.soldDate = todayISO();
     it.realizedNet = realizedNet(it, price);
+    sellingId = null;
     setItems(items); renderInventory();
     toast("Sold · net " + money(it.realizedNet));
   }
@@ -292,7 +316,16 @@
     $("importFile").addEventListener("change", function (e) { if (e.target.files[0]) importCsv(e.target.files[0]); e.target.value = ""; });
     $("itemsBody").addEventListener("click", function (e) {
       var b = e.target.closest("[data-act]"); if (!b) return;
-      if (b.dataset.act === "sold") markSold(b.dataset.id); else deleteItem(b.dataset.id);
+      var act = b.dataset.act, id = b.dataset.id;
+      if (act === "sold") startSell(id);
+      else if (act === "confirmsold") confirmSell(id);
+      else if (act === "cancelsold") cancelSell();
+      else if (act === "del") deleteItem(id);
+    });
+    $("itemsBody").addEventListener("keydown", function (e) {
+      if (!sellingId) return;
+      if (e.key === "Enter") { e.preventDefault(); confirmSell(sellingId); }
+      else if (e.key === "Escape") { e.preventDefault(); cancelSell(); }
     });
     // tabs
     document.querySelectorAll(".tab").forEach(function (t) {

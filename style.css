@@ -167,6 +167,10 @@ b, strong { font-weight: 800; }
 .rowbtn + .rowbtn { margin-left: 4px; }
 .rowbtn.sold:hover { background: var(--good); }
 .rowbtn.del:hover { background: var(--hot); color: #fff; }
+.sell-inline { display: inline-flex; gap: 4px; align-items: stretch; }
+.sell-input { width: 78px; border: 2px solid var(--ink); background: var(--accent); color: var(--ink); font-family: var(--mono); font-weight: 800; font-size: 13px; padding: 3px 6px; text-align: right; }
+.sell-input:focus { outline: none; }
+.add-name { margin-bottom: 12px; }
 .empty-note { font-size: 13px; font-weight: 700; text-transform: uppercase; padding: 18px; border: var(--bw) dashed var(--ink); margin-top: 12px; }
 
 /* Footnote / footer */
