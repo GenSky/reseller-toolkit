@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Reseller Toolkit — Profit Calculator + Inventory Tracker</title>
+  <meta name="description" content="A free, private reseller toolkit: calculate net profit after eBay/Mercari/Poshmark fees, then track inventory, aging, and realized profit. No login, no backend, brutalist and bold." />
+  <meta name="color-scheme" content="light dark" />
+  <meta property="og:title" content="Reseller Toolkit — Profit + Inventory" />
+  <meta property="og:description" content="Calculate net profit after fees and track inventory aging — in one free, private tool." />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="masthead">
+    <div class="wrap mast-inner">
+      <div class="logo-block">
+        <span class="logo-mark">▚</span>
+        <div>
+          <h1>RESELLER TOOLKIT</h1>
+          <p class="tagline">PROFIT CALCULATOR × INVENTORY TRACKER — NO LOGIN, NO BACKEND, ALL LOCAL.</p>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <nav class="tabs wrap" role="tablist" aria-label="Tools">
+    <button class="tab is-active" role="tab" aria-selected="true" data-tab="calc">01 / CALCULATOR</button>
+    <button class="tab" role="tab" aria-selected="false" data-tab="inventory">02 / INVENTORY <span class="tab-count" id="tabCount">0</span></button>
+  </nav>
+
+  <main class="wrap">
+    <!-- ================= CALCULATOR ================= -->
+    <section id="panel-calc" class="tabpanel" role="tabpanel">
+      <div class="split">
+        <div class="block">
+          <h2 class="block-title">▶ THE NUMBERS</h2>
+
+          <div class="chips" id="platformChips" role="group" aria-label="Platform fee preset">
+            <button class="chip is-active" type="button" data-fee="13.25" data-fixed="0.30">EBAY</button>
+            <button class="chip" type="button" data-fee="10" data-fixed="0.30">MERCARI</button>
+            <button class="chip" type="button" data-fee="20" data-fixed="0">POSHMARK</button>
+            <button class="chip" type="button" data-fee="0" data-fixed="0">CUSTOM</button>
+          </div>
+
+          <div class="bfields">
+            <label class="bfield"><span>SALE PRICE</span>
+              <div class="money"><i>$</i><input id="salePrice" type="number" min="0" step="0.01" inputmode="decimal" value="40" /></div></label>
+            <label class="bfield"><span>COST OF GOODS</span>
+              <div class="money"><i>$</i><input id="cogs" type="number" min="0" step="0.01" inputmode="decimal" value="8" /></div></label>
+            <label class="bfield"><span>SHIPPING COST</span>
+              <div class="money"><i>$</i><input id="shipping" type="number" min="0" step="0.01" inputmode="decimal" value="5" /></div></label>
+            <div class="bfield-row">
+              <label class="bfield"><span>PLATFORM FEE</span>
+                <div class="money suf"><input id="feePct" type="number" min="0" step="0.01" inputmode="decimal" value="13.25" /><i>%</i></div></label>
+              <label class="bfield"><span>FIXED FEE</span>
+                <div class="money"><i>$</i><input id="fixedFee" type="number" min="0" step="0.01" inputmode="decimal" value="0.30" /></div></label>
+            </div>
+            <label class="bfield"><span>EXTRA COSTS</span>
+              <div class="money"><i>$</i><input id="extra" type="number" min="0" step="0.01" inputmode="decimal" value="0" /></div></label>
+          </div>
+        </div>
+
+        <div class="block">
+          <h2 class="block-title">▶ THE VERDICT</h2>
+          <div class="verdict" id="netCard">
+            <span class="v-label">NET PROFIT</span>
+            <span class="v-net" id="netProfit">$0.00</span>
+          </div>
+          <div class="stat-row">
+            <div class="stat"><span class="s-label">MARGIN</span><span class="s-val" id="margin">0%</span></div>
+            <div class="stat"><span class="s-label">ROI</span><span class="s-val" id="roi">0%</span></div>
+            <div class="stat"><span class="s-label">TOTAL FEES</span><span class="s-val" id="totalFees">$0.00</span></div>
+          </div>
+          <div class="be">
+            <span>BREAK-EVEN PRICE @ <input id="targetMargin" type="number" min="0" max="95" step="1" value="30" />% MARGIN:</span>
+            <strong id="breakeven">$0.00</strong>
+          </div>
+          <button id="addToInv" class="bigbtn" type="button">＋ ADD THIS TO INVENTORY →</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= INVENTORY ================= -->
+    <section id="panel-inventory" class="tabpanel hidden" role="tabpanel">
+      <div id="summary" class="summary"></div>
+
+      <div class="block inv-add">
+        <h2 class="block-title">▶ ADD ITEM</h2>
+        <form id="addForm" class="inv-form">
+          <label class="bfield"><span>ITEM NAME</span><input id="i_name" type="text" required placeholder="NIKE WINDBREAKER (L)" /></label>
+          <label class="bfield"><span>COST</span><div class="money"><i>$</i><input id="i_cost" type="number" min="0" step="0.01" required /></div></label>
+          <label class="bfield"><span>LIST PRICE</span><div class="money"><i>$</i><input id="i_list" type="number" min="0" step="0.01" /></div></label>
+          <label class="bfield"><span>ACQUIRED</span><input id="i_date" type="date" required /></label>
+          <label class="bfield"><span>PLATFORM</span><input id="i_platform" type="text" list="plats" placeholder="EBAY" />
+            <datalist id="plats"><option>eBay</option><option>Mercari</option><option>Poshmark</option><option>Depop</option></datalist></label>
+          <button class="bigbtn" type="submit">＋ ADD</button>
+        </form>
+      </div>
+
+      <div class="block">
+        <div class="inv-head">
+          <h2 class="block-title">▶ THE STASH</h2>
+          <div class="inv-actions">
+            <select id="filterStatus" class="brutal-sel">
+              <option value="active">ACTIVE</option>
+              <option value="sold">SOLD</option>
+              <option value="all">ALL</option>
+            </select>
+            <button id="importBtn" class="minibtn" type="button">IMPORT</button>
+            <input id="importFile" type="file" accept=".csv" class="hidden" />
+            <button id="exportBtn" class="minibtn" type="button">CSV</button>
+          </div>
+        </div>
+        <div class="table-scroll">
+          <table class="brutal-table" id="itemsTable">
+            <thead><tr><th>ITEM</th><th class="num">COST</th><th class="num">LIST</th><th class="num">DAYS</th><th>AGE</th><th>STATUS</th><th></th></tr></thead>
+            <tbody id="itemsBody"></tbody>
+          </table>
+        </div>
+        <p id="itemsEmpty" class="empty-note">NO ITEMS YET. CALCULATE A DEAL → ADD TO INVENTORY, OR ADD ONE ABOVE. ALL DATA STAYS IN YOUR BROWSER.</p>
+      </div>
+    </section>
+
+    <section class="footnote">
+      <p>★ AGING: 0–30D FRESH / 31–90D WATCH / <b>90+D DEAD STOCK</b>. MARK ITEMS SOLD TO RECORD REALIZED PROFIT (FEES INCLUDED IF SAVED FROM THE CALCULATOR). MARKETPLACE FEES CHANGE — VERIFY CURRENT RATES. ESTIMATES, NOT FINANCIAL ADVICE.</p>
+    </section>
+  </main>
+
+  <footer class="footer wrap">
+    <p>LOCAL-FIRST &amp; PRIVATE. NO ACCOUNT. NO TRACKING. YOUR DATA NEVER LEAVES THIS BROWSER.</p>
+  </footer>
+
+  <div id="toast" class="toast hidden" role="status" aria-live="polite"></div>
+  <script src="app.js"></script>
+</body>
+</html>
