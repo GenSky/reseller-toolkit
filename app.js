@@ -249,8 +249,28 @@
     $("panel-inventory").classList.toggle("hidden", name !== "inventory");
   }
 
+  /* ========== theme (default light; opt-in dark, persisted) ========== */
+  var THEME_KEY = "rt.theme.v1";
+  function applyTheme(t) {
+    document.documentElement.setAttribute("data-theme", t);
+    var icon = $("themeIcon");
+    if (icon) icon.textContent = t === "dark" ? "☾ DARK" : "☀ LIGHT";
+  }
+  function initTheme() {
+    var saved;
+    try { saved = localStorage.getItem(THEME_KEY); } catch (e) {}
+    applyTheme(saved === "dark" ? "dark" : "light"); // default light, ignore OS
+    var btn = $("themeToggle");
+    if (btn) btn.addEventListener("click", function () {
+      var next = document.documentElement.getAttribute("data-theme") === "dark" ? "light" : "dark";
+      applyTheme(next);
+      try { localStorage.setItem(THEME_KEY, next); } catch (e) {}
+    });
+  }
+
   /* ========== init ========== */
   function init() {
+    initTheme();
     $("i_date").value = todayISO();
     // calculator
     ["salePrice", "cogs", "shipping", "feePct", "fixedFee", "extra", "targetMargin"].forEach(function (id) {

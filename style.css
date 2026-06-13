@@ -15,11 +15,11 @@
   --mono: ui-monospace, "Cascadia Mono", "Courier New", monospace;
   --sans: "Helvetica Neue", Arial, "Arial Black", sans-serif;
 }
-@media (prefers-color-scheme: dark) {
-  :root {
-    --paper: #121212; --ink: #f3eee2; --panel: #1c1c1c;
-    --shadow: 6px 6px 0 #000; --shadow-sm: 4px 4px 0 #000;
-  }
+/* Dark variant is opt-in via the toggle (data-theme="dark"), NOT auto from the
+   OS — the site always opens in the light brutalist theme. */
+[data-theme="dark"] {
+  --paper: #121212; --ink: #f3eee2; --panel: #1c1c1c;
+  --shadow: 6px 6px 0 #000; --shadow-sm: 4px 4px 0 #000;
 }
 
 * { box-sizing: border-box; }
@@ -29,7 +29,7 @@ body {
   background-image: radial-gradient(var(--ink) 1px, transparent 1px);
   background-size: 22px 22px; background-position: -11px -11px;
 }
-@media (prefers-color-scheme: dark) { body { background-image: radial-gradient(#2a2a2a 1px, transparent 1px); } }
+[data-theme="dark"] body { background-image: radial-gradient(#2a2a2a 1px, transparent 1px); }
 
 .wrap { max-width: 1080px; margin: 0 auto; padding: 0 18px; }
 .hidden { display: none !important; }
@@ -37,7 +37,15 @@ b, strong { font-weight: 800; }
 
 /* Masthead */
 .masthead { background: var(--accent); border-bottom: var(--bw) solid var(--ink); color: var(--ink); }
-.mast-inner { padding: 22px 18px; }
+.mast-inner { padding: 22px 18px; display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+.theme-toggle {
+  font-family: var(--mono); font-weight: 800; font-size: 13px; letter-spacing: .04em;
+  background: var(--ink); color: var(--accent); border: var(--bw) solid var(--ink);
+  padding: 10px 14px; cursor: pointer; text-transform: uppercase; box-shadow: 4px 4px 0 rgba(0,0,0,.35);
+  flex: none;
+}
+.theme-toggle:hover { background: var(--paper); color: var(--ink); }
+.theme-toggle:active { transform: translate(2px, 2px); box-shadow: none; }
 .logo-block { display: flex; align-items: center; gap: 16px; }
 .logo-mark {
   font-size: 40px; line-height: 1; background: var(--ink); color: var(--accent);
