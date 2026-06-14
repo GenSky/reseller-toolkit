@@ -8,7 +8,55 @@
   <meta name="color-scheme" content="light dark" />
   <meta property="og:title" content="Reseller Toolkit — Profit + Inventory" />
   <meta property="og:description" content="Calculate net profit after fees and track inventory aging — in one free, private tool." />
+  <meta property="og:url" content="https://gensky.github.io/reseller-toolkit/" />
+  <link rel="canonical" href="https://gensky.github.io/reseller-toolkit/" />
   <link rel="stylesheet" href="style.css" />
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Reseller Toolkit",
+    "url": "https://gensky.github.io/reseller-toolkit/",
+    "applicationCategory": "BusinessApplication",
+    "operatingSystem": "Any (web browser)",
+    "browserRequirements": "Requires JavaScript. Runs locally; no account needed.",
+    "description": "Free, no-signup web app that calculates reseller net profit after eBay, Mercari, and Poshmark fees, and tracks inventory aging, dead stock, and realized profit. Runs locally in the browser.",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+    "featureList": [
+      "Net profit, margin, and ROI after marketplace and payment fees",
+      "eBay, Mercari, Poshmark fee presets plus editable custom fees",
+      "Break-even sale price for a target margin",
+      "Inventory tracker with aging buckets and dead-stock flagging",
+      "Capital tied up, realized profit, and sell-through rate",
+      "CSV import and export",
+      "Local-first and private — no login, no tracking"
+    ],
+    "isAccessibleForFree": true
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      { "@type": "Question", "name": "Is the Reseller Toolkit free?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Yes. It is completely free with no signup, no account, and no ads. It runs entirely in your browser." } },
+      { "@type": "Question", "name": "Which marketplaces does it support?",
+        "acceptedAnswer": { "@type": "Answer", "text": "It has fee presets for eBay, Mercari, and Poshmark, plus a Custom option with editable fee fields so you can match any platform or your exact category rate." } },
+      { "@type": "Question", "name": "How does it calculate net profit?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Net profit equals your sale price minus the platform fee, the fixed per-order fee, shipping cost, cost of goods, and any extra costs. It also shows profit margin and ROI." } },
+      { "@type": "Question", "name": "What is eBay's selling fee in 2026?",
+        "acceptedAnswer": { "@type": "Answer", "text": "eBay's standard final value fee is about 13.25% plus a $0.30 per-order fee, but it varies by category and store subscription. The calculator's fee fields are editable so you can enter your exact rate." } },
+      { "@type": "Question", "name": "Does it track inventory?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Yes. The inventory tracker shows item aging (fresh, watch, and 90+ day dead stock), capital tied up, potential revenue, realized profit, and your sell-through rate." } },
+      { "@type": "Question", "name": "Is my data private?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Yes. Everything is stored only in your browser's local storage. Nothing is uploaded, and there is no tracking or account." } },
+      { "@type": "Question", "name": "Can I export my data?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Yes. You can export your inventory to CSV and import it back, so you can back it up or move it between devices." } }
+    ]
+  }
+  </script>
 </head>
 <body>
   <header class="masthead">
@@ -128,6 +176,39 @@
 
     <section class="footnote">
       <p>★ AGING: 0–30D FRESH / 31–90D WATCH / <b>90+D DEAD STOCK</b>. MARK ITEMS SOLD TO RECORD REALIZED PROFIT (FEES INCLUDED IF SAVED FROM THE CALCULATOR). MARKETPLACE FEES CHANGE — VERIFY CURRENT RATES. ESTIMATES, NOT FINANCIAL ADVICE.</p>
+    </section>
+
+    <!-- ================= ABOUT / SEO + AEO CONTENT ================= -->
+    <section class="content" id="about">
+      <h2 class="content-h">▶ WHAT IS THE RESELLER TOOLKIT?</h2>
+      <p class="lead">The Reseller Toolkit is a free, no-signup web app that calculates your real net profit after eBay, Mercari, and Poshmark fees — and tracks your inventory, item aging, dead stock, and realized profit in one place. Everything runs locally in your browser, so your data stays private.</p>
+      <p>Use the <strong>Calculator</strong> tab to see net profit, margin, ROI, and the break-even sale price for any item after marketplace and payment fees. Then hit <strong>Add to inventory</strong> to track it in the <strong>Inventory</strong> tab, where items age into fresh, watch, and 90+ day dead-stock buckets and "mark sold" records your true realized profit using the saved fees.</p>
+
+      <h2 class="content-h" id="fees">▶ 2026 MARKETPLACE FEES (QUICK REFERENCE)</h2>
+      <div class="table-scroll">
+        <table class="brutal-table">
+          <thead><tr><th>MARKETPLACE</th><th class="num">SELLING FEE</th><th class="num">PER-ORDER FEE</th></tr></thead>
+          <tbody>
+            <tr><td>eBay</td><td class="num">~13.25%</td><td class="num">$0.30</td></tr>
+            <tr><td>Mercari</td><td class="num">~10%</td><td class="num">$0.30</td></tr>
+            <tr><td>Poshmark</td><td class="num">20% ($15+)</td><td class="num">$2.95 under $15</td></tr>
+            <tr><td>Depop</td><td class="num">~10%</td><td class="num">varies</td></tr>
+            <tr><td>Etsy</td><td class="num">6.5%</td><td class="num">+ payment fee</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="fineprint">Rates as of 2026; they vary by category, store subscription, and promotions and change often — always confirm on each marketplace's official fee page. The calculator's fee fields are editable so you can match your exact rate.</p>
+
+      <h2 class="content-h">▶ FREQUENTLY ASKED QUESTIONS</h2>
+      <div class="faq">
+        <details open><summary>Is the Reseller Toolkit free?</summary><p>Yes — completely free, with no signup, no account, and no ads. It runs entirely in your browser.</p></details>
+        <details><summary>Which marketplaces does it support?</summary><p>Fee presets for eBay, Mercari, and Poshmark, plus a Custom option with editable fee fields so you can match any platform or your exact category rate.</p></details>
+        <details><summary>How does it calculate net profit?</summary><p>Net profit = sale price − platform fee − fixed per-order fee − shipping − cost of goods − extra costs. It also shows profit margin and ROI.</p></details>
+        <details><summary>What is eBay's selling fee in 2026?</summary><p>eBay's standard final value fee is about 13.25% plus a $0.30 per-order fee, but it varies by category and store subscription. The fee fields are editable so you can enter your exact rate.</p></details>
+        <details><summary>Does it track inventory?</summary><p>Yes — aging buckets (fresh, watch, and 90+ day dead stock), capital tied up, potential revenue, realized profit, and your sell-through rate.</p></details>
+        <details><summary>Is my data private?</summary><p>Yes. Everything is stored only in your browser's local storage. Nothing is uploaded, and there is no tracking or account.</p></details>
+        <details><summary>Can I export my data?</summary><p>Yes — CSV export and import, so you can back up your inventory or move it between devices.</p></details>
+      </div>
     </section>
   </main>
 
